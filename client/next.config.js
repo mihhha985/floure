@@ -3,9 +3,13 @@ const nextConfig = {
   env: {
     API_URL: 'http://localhost:8000',
   },
-  images: {
-    domains: ['localhost'],
-  },
+	images: {
+		remotePatterns: [
+			{
+				hostname: 'localhost',
+			},
+		],
+	}
 }
 
 module.exports = nextConfig

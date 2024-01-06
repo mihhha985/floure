@@ -13,7 +13,7 @@ const getData = async () => {
 async function CategoryList() {
 
 	const data = await getData();
-  console.log(data);
+	
 	return ( 
 		<div className="flex flex-nowrap gap-x-5 w-max h-20 items-center">
 			{data && data.map((item:ICategory) =>

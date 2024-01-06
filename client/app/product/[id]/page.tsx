@@ -16,7 +16,7 @@ const getData = async (id:string) => {
 
 async function Page({ params }: { params: { id: string } }) {
   const data = await getData(params.id);
-  console.log(data);
+  
   return (
     <section className="section">
 			<div className="container px-5">

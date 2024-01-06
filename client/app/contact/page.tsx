@@ -1,6 +1,5 @@
 "use client"
 import { Suspense } from 'react';
-import { YMaps, Map } from "react-yandex-maps";
 
 function Page() {
 	return ( 
