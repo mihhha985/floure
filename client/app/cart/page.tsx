@@ -45,13 +45,13 @@ function Page() {
 								{products.map((item, key) => 
 									<CartItems item={item} key={key} />
 								)}
-								<div className="flex items-center justify-between mt-10">
+								<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-y-5 mt-10">
+									<h4 className="text-2xl text-gold-200">Итого: {totalPrice} руб.</h4>
 									<button
 										onClick={() => setIsVisible(true)} 
 										className="btn w-[200px]">
 										Оформить заказ
 									</button>
-									<h4 className="text-2xl text-gold-200">Итого: {totalPrice} руб.</h4>
 								</div>
 							</div>
 						</div>
@@ -67,12 +67,12 @@ function Page() {
 								</span>
 							</div>
 							<div className="pb-5">
-								<div className="grid grid-cols-1 lg:grid-cols-2 w-full">
+								<div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-y-5">
 									<div className='flex flex-col gap-y-5'>
-										<input type="text" placeholder="Введите ваше имя" className="input w-[400px] h-12" />
-										<input type="text" placeholder="Введите ваш номер" className="input w-[400px] h-12" />
+										<input type="text" placeholder="Введите ваше имя" className="input w-full sm:w-[400px] h-12" />
+										<input type="text" placeholder="Введите ваш номер" className="input w-full sm:w-[400px] h-12" />
 									</div>
-									<textarea placeholder="Введите ваш адрес" className="input w-[400px] h-[180px] resize-none" />
+									<textarea placeholder="Введите ваш адрес" className="input w-full sm:w-[400px] h-[180px] resize-none" />
 									<div>
 										<h5 className='text-2xl text-gold-100'>Выберите способ оплаты:</h5>
 										<div className='flex gap-x-2 text-gold-200'>
@@ -96,7 +96,7 @@ function Page() {
 					}
 				</div>
 				:
-				<div className="w-1/3 p-10 rounded-lg border-2 border-base mx-auto my-20">
+				<div className="w-full sm:w-1/2 lg:w-1/3 p-10 rounded-lg border-2 border-base mx-auto my-20">
 					<h3 className="text-2xl text-center text-gold-200">Корзина пуста</h3>
 					<h4 className="text-xl text-center text-base mt-5">Чтобы сделать заказ добавьте понравившиеся товары в корзину</h4>
 				</div>

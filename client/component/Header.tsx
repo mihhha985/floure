@@ -24,7 +24,7 @@ function Header() {
 	const [isVisible, setIsVisible] = useState<boolean>(false);
 	return ( 
 		<>
-		<header className="flex items-center justify-between w-full h-16 lg:h-20 bg-[#26252a] px-5 absolute top-8 lg:top-10">
+		<header className="flex items-center justify-between w-full h-16 lg:h-20 bg-[#26252a] px-5 absolute top-8 lg:top-10 z-50">
 			<Image className="hidden lg:block" src={logo} alt="logo" width={40} height={60} />
 			<div className='flex items-center'>
 				<Link href="/" 

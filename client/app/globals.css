@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 body {
-    @apply min-h-screen relative bg-[#0f0e10];
+    @apply min-h-screen relative bg-[#0f0e10] font-display;
 }
 
 .section {
-    @apply w-full h-full pt-40 pb-10;
+    @apply w-full h-full pt-32 sm:pt-40 px-5;
 }
 
 .container {

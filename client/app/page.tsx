@@ -7,10 +7,8 @@ function Page() {
 		<>
 		<section className="flex flex-col w-full h-screen bg-[url('/header.jpg')] bg-cover bg-center">
 			<div className="bg-gradient-to-t from-[#0f0e10] w-full mt-auto py-10 px-2">
-				<h3 
-					className="mb-40 xl:mb-0 text-4xl md:text-5xl lg:text-6xl text-gold-200 font-semibold text-center shadow-local"
-				>
-					Траурные венки в наличии и под заказ
+				<h3 className="mb-40 xl:mb-0 text-4xl md:text-5xl lg:text-6xl text-gold-200 font-semibold text-center shadow-local">
+					Авторские траурные венки<br /> в наличии и под заказ
 				</h3>
 				<ToggleCategory />
 			</div>

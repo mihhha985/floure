@@ -45,7 +45,6 @@ function ToggleCategory() {
 				{category === 'cross' &&
 				<>
 					<motion.div
-						key={category}
 						variants={variantsHeadline}
 						initial="hidden"
 						animate="visible"
@@ -55,7 +54,6 @@ function ToggleCategory() {
 						<h4 className="text-2xl text-gold-200">Венки стандартные, эконом</h4>
 					</motion.div>
 					<motion.p
-						key={category}
 						variants={variantsText}
 						initial="hidden"
 						animate="visible"
@@ -70,7 +68,6 @@ function ToggleCategory() {
 				{category === 'roses' &&
 				<>
 					<motion.div
-						key={category}
 						variants={variantsHeadline}
 						initial="hidden"
 						animate="visible"
@@ -80,7 +77,6 @@ function ToggleCategory() {
 						<h4 className="text-2xl text-gold-200">Венки из живых цветов, премиум</h4>
 					</motion.div>
 					<motion.p
-						key={category}
 						variants={variantsText}
 						initial="hidden"
 						animate="visible"
@@ -95,7 +91,6 @@ function ToggleCategory() {
 				{category === 'star' &&
 				<>
 					<motion.div
-						key={category}
 						variants={variantsHeadline}
 						initial="hidden"
 						animate="visible"
@@ -105,7 +100,6 @@ function ToggleCategory() {
 						<h4 className="text-2xl text-gold-200">Ритуальные венки, патриотические</h4>
 					</motion.div>
 					<motion.p
-						key={category}
 						variants={variantsText}
 						initial="hidden"
 						animate="visible"
@@ -120,7 +114,6 @@ function ToggleCategory() {
 				{category === 'skull' &&
 				<>
 					<motion.div
-						key={category}
 						variants={variantsHeadline}
 						initial="hidden"
 						animate="visible"
@@ -130,7 +123,6 @@ function ToggleCategory() {
 						<h4 className="text-2xl text-gold-200">Траурные корзины, из живых цветов</h4>
 					</motion.div>
 					<motion.p
-						key={category}
 						variants={variantsText}
 						initial="hidden"
 						animate="visible"
@@ -145,7 +137,6 @@ function ToggleCategory() {
 				{category === 'gerland' &&
 					<>
 					<motion.div
-						key={category}
 						variants={variantsHeadline}
 						initial="hidden"
 						animate="visible"
@@ -155,7 +146,6 @@ function ToggleCategory() {
 						<h4 className="text-2xl text-gold-200">Гирлянды в изголовье, из живых цветов</h4>
 					</motion.div>
 					<motion.p
-						key={category}
 						variants={variantsText}
 						initial="hidden"
 						animate="visible"
@@ -176,7 +166,7 @@ function ToggleCategory() {
 							animate={category === 'cross' ? 'chacked' : 'dufault'}
 							transition={{ duration: 0.3 }}
 							className="rounded-[50%] overflow-hidden border-4 border-base w-[150px] h-[150px] relative cursor-pointer">
-							<Image src={'/wreath_cross.png'} alt="icon" fill/>
+							<Image src={'/wreath_cross.png'} alt="icon" sizes="100%" fill/>
 						</motion.div>
 						<p className="text-xl text-gold-200 text-center">венки стандартные,<br /> эконом</p>
 					</div>
@@ -187,7 +177,7 @@ function ToggleCategory() {
 							animate={category === 'roses' ? 'chacked' : 'dufault'} 
 							transition={{ duration: 0.3 }}
 							className="rounded-[50%] overflow-hidden border-4 border-base w-[150px] h-[150px] relative cursor-pointer">
-							<Image src={'/wreath_of_roses.png'} alt="icon" fill/>
+							<Image src={'/wreath_of_roses.png'} alt="icon" sizes="100%"fill/>
 						</motion.div>
 						<p className="text-xl text-gold-200 text-center">венки из живых цветов,<br /> премиум</p>
 					</div>
@@ -199,7 +189,7 @@ function ToggleCategory() {
 							animate={category === 'star' ? 'chacked' : 'dufault'} 
 							transition={{ duration: 0.3 }}
 							className="rounded-[50%] overflow-hidden border-4 border-base w-[150px] h-[150px] relative cursor-pointer">
-							<Image src={'/wreath_star.png'} alt="icon" fill/>
+							<Image src={'/wreath_star.png'} alt="icon" sizes="100%" fill/>
 						</motion.div>
 						<p className="text-xl text-gold-200 text-center">ритуальные венки,<br /> патриотические</p>
 					</div>
@@ -210,7 +200,7 @@ function ToggleCategory() {
 							animate={category === 'skull' ? 'chacked' : 'dufault'}
 							transition={{ duration: 0.3 }}
 							className="rounded-[50%] overflow-hidden border-4 border-base w-[150px] h-[150px] relative cursor-pointer">
-							<Image src={'/basket_skull.png'} alt="icon" fill/>
+							<Image src={'/basket_skull.png'} alt="icon" sizes="100%" fill/>
 						</motion.div>
 						<p className="text-xl text-gold-200 text-center">траурные корзины,<br /> из живых цветов</p>
 					</div>
@@ -221,7 +211,7 @@ function ToggleCategory() {
 							animate={category === 'gerland' ? 'chacked' : 'dufault'}
 							transition={{ duration: 0.3 }}
 							className="rounded-[50%] overflow-hidden border-4 border-base w-[150px] h-[150px] relative cursor-pointer">
-							<Image src={'/funreal_gerland.png'} alt="icon" fill/>
+							<Image src={'/funreal_gerland.png'} alt="icon" sizes="100%" fill/>
 						</motion.div>
 						<p className="text-xl text-gold-200 text-center">гирлянды в изголовье,<br /> из живых цветов</p>
 					</div>

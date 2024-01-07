@@ -1,7 +1,7 @@
 function Page() {
 	return ( 
 		<section className="section">
-			<div className="w-1/3 p-10 rounded-lg border-2 border-base mx-auto my-20">
+			<div className="w-full md:w-1/2 lg:w-1/3 p-10 rounded-lg border-2 border-base mx-auto my-10 lg:my-20">
 				<h1 className="text-4xl text-gold-100 font-bold text-center mb-5">Спасибо за заказ!</h1>
 				<h4 className="text-xl text-gold-200 text-center mb-2">
 					В ближайшее время нам менеджер свяжется с Вами для уточнения деталей заказа<br />
