@@ -10,16 +10,21 @@ import CartPage from "@/component/CartPage";
 export default function Template({ children }: { children: React.ReactNode }) {
 	const dispatch = useAppDispatch();
 	const pathname = usePathname();
-	console.log(process.env.API_URL);
+	//console.log(process.env.API_URL);
 	useEffect(() => {
-		const order = localStorage.getItem("order");
-		if (order) {
-			const orderArr = JSON.parse(order);
-			orderArr.forEach((product:any) => {
-				dispatch(addProduct(product));	
-				console.log(product.id);			
-			});
-		}
+		const promise = new Promise((resolve, reject) => {
+			const order = localStorage.getItem("order");
+			if (order) {
+				const orderArr = JSON.parse(order);
+				orderArr.forEach((product:any) => {
+					dispatch(addProduct(product));	
+					//console.log(product.id);			
+				});
+			}
+			resolve('ok');
+		});
+
+		console.log(promise);
 	}, [dispatch]);
 
   return (

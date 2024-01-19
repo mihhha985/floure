@@ -7,10 +7,10 @@ export class Parametrs {
   id: number;
 
   @Column()
-  title: string;
+  size: number;
 
 	@Column()
-	description: string;
+	cost: number;
 
 	@ManyToOne(() => Catalog, (catalog) => catalog.parametrs, {onDelete: 'CASCADE'})
   catalog: Catalog

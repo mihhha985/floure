@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image";
 import {useState} from "react";
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
@@ -43,7 +44,7 @@ function ProductItem({item}:{item:IProduct}) {
 			<Box>
 				{item.photo
 				 ?
-				 <img src={`${process.env.serverUrl}/${item.photo}`} height="80px" />
+				 <Image src={`${process.env.serverUrl}/${item.photo}`} height={80} width={80} alt={item.title} />
 				 :
 				 <Skeleton variant="rectangular" width={60} height={80} />
 				}

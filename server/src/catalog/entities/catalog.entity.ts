@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne,  OneToMany, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne,  OneToMany } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { Parametrs } from './parametrs.entity';
 import { Images } from './images.entity';
@@ -15,6 +15,9 @@ export class Catalog{
   description: string;
 
   @Column()
+  articule:number;
+
+	@Column()
   price:number;
 
 	@Column({

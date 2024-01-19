@@ -5,6 +5,7 @@ export interface IProduct{
 	title:string;
 	description:string;
 	price:number;
+	articule:number;
 	photo?:string;
 	isActive:boolean;
 	category:ICategory;
@@ -14,13 +15,13 @@ export interface IProduct{
 export interface ICreateProduct{
 	title:string;
 	description:string;
-	price:number;
+	articule:number;
 	photo?:string;
 	categoryId:number;
 }
 
 export type InfoType = {
 	id?:number;
-	title:string;
-	description:string;
+	size:string;
+	cost:string;
 }

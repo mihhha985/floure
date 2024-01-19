@@ -22,6 +22,7 @@ function Page() {
 			formData.append('category', category.id.toString());
 			formData.append('title', title);
 			formData.append('description', description);
+			formData.append('articule', articule);
 			formData.append('price', price);
 			formData.append('file', file as File);
 			formData.append('info', JSON.stringify(info));
@@ -78,6 +79,7 @@ function Page() {
 
 	const [title, setTitle] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
+	const [articule, setArticule] = useState<string>('');
 	const [price, setPrice] = useState<string>('');
 	const [file, setFile] = useState<File | null>(null);
 	const [categories, setCategories] = useState<ICategorySelected[] | []>([]);
@@ -118,6 +120,16 @@ function Page() {
 							required 
 						/>						
 						<FormControl fullWidth sx={{ m: 1 }} variant="standard">
+							<InputLabel htmlFor="standard-adornment-amount">Артикуль *</InputLabel>
+							<Input
+								value={articule}
+								onChange={e => setArticule(e.target.value)}
+								id="standard-adornment-amount"
+								startAdornment={<InputAdornment position="start">@</InputAdornment>}
+								required
+							/>
+						</FormControl>	
+						<FormControl fullWidth sx={{ m: 1 }} variant="standard">
 							<InputLabel htmlFor="standard-adornment-amount">Цена *</InputLabel>
 							<Input
 								value={price}
@@ -126,7 +138,7 @@ function Page() {
 								startAdornment={<InputAdornment position="start">&#8381;</InputAdornment>}
 								required
 							/>
-						</FormControl>						
+						</FormControl>							
 						<Autocomplete
 							onChange={(event: any, newValue: any) => {
 								setCategory(newValue);
@@ -153,22 +165,22 @@ function Page() {
 									<TextField 
 										onChange={e => {
 											const arr = [...info];
-											arr[index].title = e.target.value;
+											arr[index].size = e.target.value;
 											setInfo(arr);
 										}}
-										value={item.title}
-										label="Название" 
+										value={item.size}
+										label="Размер" 
 										variant="standard"
 										required 
 									/>
 									<TextField 
 										onChange={e => {
 											const arr = [...info];
-											arr[index].description = e.target.value;
+											arr[index].cost = e.target.value;
 											setInfo(arr);
 										}}
-										value={item.description}
-										label="Значение" 
+										value={item.cost}
+										label="Цена" 
 										variant="standard"
 										required 
 									/>
@@ -188,7 +200,7 @@ function Page() {
 							<Button 
 								sx={{mt:"40px"}}
 								variant="contained" 
-								onClick={() => setInfo([...info, {title:'', description:''}])}>
+								onClick={() => setInfo([...info, {size:'', cost:''}])}>
 								Добавить характеристику
 							</Button>
 						</Grid>					

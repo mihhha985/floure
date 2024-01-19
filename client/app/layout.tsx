@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Playfair_Display } from 'next/font/google'
 import Providers from '@/component/Provaider'
+import { headers } from 'next/headers'
 const inter = Playfair_Display({ 
 	subsets: ['cyrillic'],
 	weight: ['400', '500', '700', '800'], 

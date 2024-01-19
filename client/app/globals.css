@@ -15,7 +15,7 @@ body {
 }
 
 .image-box{
-    @apply w-full h-80 flex items-center justify-center hover:bg-gradient-radial hover:from-gold-200 ;
+    @apply w-full h-80 flex items-center justify-center hover:bg-gradient-radial hover:from-gold-200/20 ;
 }
 
 .image-box > img{

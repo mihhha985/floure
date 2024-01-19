@@ -5,6 +5,7 @@ import {dataSourceOptions} from 'db/orm.config';
 import { CategoryModule } from './category/category.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { resolve } from 'path';
 		TypeOrmModule.forRoot(dataSourceOptions),
 		CatalogModule,
 		CategoryModule,
+		OrderModule,
 	],
 })
 export class AppModule {}

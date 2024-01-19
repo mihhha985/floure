@@ -1,12 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-export interface IOrderProduct  {
-  id: number,
-	title: string,
-	photo: string,
-	price: number,
-	quantity: number,
-}
+import {IOrderProduct} from "@/types/product";
 
 interface IOrderState {
 	products: IOrderProduct[] | []

@@ -7,6 +7,13 @@ const nextConfig = {
 		token: '123',
 		PORT: 8000,
   },
+	images: {
+		remotePatterns: [
+			{
+				hostname: process.env.API_HOST,
+			},
+		],
+	}
 }
 
 module.exports = nextConfig

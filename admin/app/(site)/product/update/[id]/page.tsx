@@ -21,6 +21,7 @@ function Page() {
 
 	const [title, setTitle] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
+	const [articule, setArticule] = useState<string>('');
 	const [price, setPrice] = useState<string>('');
 	const [photo, setPhoto] = useState<string>('');
 	const [file, setFile] = useState<File | null>(null);
@@ -39,6 +40,7 @@ function Page() {
 				setDescription(data.description);
 				setPrice(data.price);
 				setPhoto(data.photo);
+				setArticule(data.articule)
 				setCategory({id:data.category.id, label:data.category.name});
 				setInfo(data.parametrs);
 			}else{
@@ -78,6 +80,7 @@ function Page() {
 			formData.append('category', category.id.toString());
 			formData.append('title', title);
 			formData.append('description', description);
+			formData.append('articule', articule);
 			formData.append('price', price);
 			formData.append('info', JSON.stringify(info));
 			if(file) formData.append('file', file as File);
@@ -143,7 +146,17 @@ function Page() {
 							rows={4}
 							multiline
 							required 
-						/>					
+						/>	
+						<FormControl fullWidth sx={{ m: 1 }} variant="standard">
+							<InputLabel htmlFor="standard-adornment-amount">Артикуль *</InputLabel>
+							<Input
+								value={articule}
+								onChange={e => setArticule(e.target.value)}
+								id="standard-adornment-amount"
+								startAdornment={<InputAdornment position="start">@</InputAdornment>}
+								required
+							/>
+						</FormControl>					
 						<FormControl fullWidth sx={{ m: 1 }} variant="standard">
 							<InputLabel htmlFor="standard-adornment-amount">Цена *</InputLabel>
 							<Input
@@ -185,7 +198,7 @@ function Page() {
 								}}>
 									<HighlightOffIcon color="warning"/>
 								</Box>
-								<Image src={process.env.serverUrl + '/' + photo} alt={title} width="200" />
+								<Image src={process.env.serverUrl + '/' + photo} alt={title} width={200}  height={200}/>
 							</Box>
 							:	
 							<Input type="file" onChange={handleFileInputChange}/>
@@ -202,10 +215,10 @@ function Page() {
 									<TextField 
 										onChange={e => {
 											const arr = [...info];
-											arr[index].title = e.target.value;
+											arr[index].size = e.target.value;
 											setInfo(arr);
 										}}
-										value={item.title}
+										value={item.size}
 										label="Название" 
 										variant="standard"
 										required 
@@ -213,10 +226,10 @@ function Page() {
 									<TextField 
 										onChange={e => {
 											const arr = [...info];
-											arr[index].description = e.target.value;
+											arr[index].cost = e.target.value;
 											setInfo(arr);
 										}}
-										value={item.description}
+										value={item.cost}
 										label="Значение" 
 										variant="standard"
 										required 
@@ -237,7 +250,7 @@ function Page() {
 							<Button 
 								sx={{mt:"40px"}}
 								variant="contained" 
-								onClick={() => setInfo([...info, {title:'', description:''}])}>
+								onClick={() => setInfo([...info, {size:'', cost:''}])}>
 								Добавить характеристику
 							</Button>
 						</Grid>

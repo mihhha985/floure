@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common';
 import { CatalogService } from './catalog.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
+import { UpdateCatalogDto } from './dto/update-catalog.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express'
 
@@ -51,10 +52,9 @@ export class CatalogController {
   @UseInterceptors(FileInterceptor('file'))
   update(
 	@Param('id') id: string, 
-	@Body() dto: CreateCatalogDto,
+	@Body() dto: UpdateCatalogDto,
 	@UploadedFile() file: Express.Multer.File | undefined
   ) {	
-		console.log(dto);
     return this.catalogService.update(+id, dto, file);
   }
 
