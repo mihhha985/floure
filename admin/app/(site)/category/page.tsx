@@ -19,11 +19,12 @@ import CategoryItem from '@/component/CategoryItem';
 function Page() {
 	const dispatch = useAppDispatch();
 	const [category, setCategory] = useState<ICategory[] | []>([]);
+	const [loadError, setLoadError] = useState(false);
 	const [loading, setLoading] = useState<boolean>(true);
 	
 	useEffect(() => {
 		async function getData() {
-			const result = await fetch(process.env.serverUrl + '/category');
+			const result = await fetch('/api/backend/category');
 
 			if(result.ok){
 				const data = await result.json();
@@ -38,9 +39,10 @@ function Page() {
 			}
 		}
 
-		getData();
+		getData().catch(() => setLoadError(true)).finally(() => setLoading(false));
 	}, [dispatch]);
 
+	if (loadError) return <Typography role="alert">Не удалось загрузить данные. Обновите страницу.</Typography>;
 	if(loading){
 		return(
 			<Box sx={{ 
@@ -75,9 +77,6 @@ function Page() {
 						Нет товаров
 					</Typography>
 				}
-			</Stack>
-			<Stack spacing={2} style={{marginTop:'auto',  paddingTop:'40px'}}>
-      	<Pagination count={10} color="primary" />
 			</Stack>
 			<Link 
 				style={{ position: 'fixed', bottom: 16, right: 16 }}

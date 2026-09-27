@@ -1,19 +1,9 @@
+const { loadEnvConfig } = require('@next/env');
+const { resolve } = require('path');
+loadEnvConfig(resolve(__dirname, '..'));
+const apiUrl = new URL(process.env.API_URL || `${process.env.API_PROTOCOL || 'http'}://${process.env.API_HOST || '127.0.0.1'}:${process.env.API_PORT || '8000'}`);
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-	env: {
-  	login: '123rus',
-		password: '123rus',
-		serverUrl: 'http://localhost:8000',
-		token: '123',
-		PORT: 8000,
-  },
-	images: {
-		remotePatterns: [
-			{
-				hostname: process.env.API_HOST,
-			},
-		],
-	}
-}
-
-module.exports = nextConfig
+module.exports = {
+  env: { serverUrl: apiUrl.origin },
+  images: { remotePatterns: [{ protocol: apiUrl.protocol.replace(':', ''), hostname: apiUrl.hostname, port: apiUrl.port }] },
+};

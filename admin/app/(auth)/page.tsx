@@ -12,14 +12,27 @@ export default function Home() {
 	const router = useRouter();
 	const [login, setLogin] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
+	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
 
-	const authHandler = () => {
-		//if(login === process.env.login 
-		//&& password === process.env.password)
-		router.push('/main');
+	const authHandler = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const result = await fetch('/api/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: login, password }),
+      });
+      if (!result.ok) { setError('Неверный логин или пароль'); return; }
+      router.replace('/main');
+      router.refresh();
+    } catch { setError('Не удалось связаться с сервером'); }
+    finally { setLoading(false); }
 	}
 
   return (
+    <form onSubmit={authHandler}>
 		<Card sx={{width:"380px", m:"5vh auto"}} variant='outlined'>
 			<CardContent>
 					<Typography variant="h3" gutterBottom>Вход</Typography>
@@ -28,6 +41,8 @@ export default function Home() {
 						variant="standard"
 						onChange={e => setLogin(e.target.value)} 
 						value={login}
+						autoComplete="username"
+						required
 					/>
 					<TextField
 						label="Password"
@@ -35,17 +50,20 @@ export default function Home() {
 						type="password"
 						autoComplete="current-password"
 						onChange={e => setPassword(e.target.value)}
-						value={password}	
+						value={password}
+						required
 					/>
+					{error && <Typography role="alert" color="error">{error}</Typography>}
 			</CardContent>
 			<CardActions>
 				<Button
-					onClick={authHandler}
-					type='button' 
+					type='submit'
+					disabled={loading}
 					variant="contained">
-					Send
+					{loading ? 'Вход…' : 'Войти'}
 				</Button>
 			</CardActions>
 		</Card>
+    </form>
   )
 }

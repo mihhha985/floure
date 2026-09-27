@@ -15,25 +15,26 @@ import OrderItem from "@/component/OrderItem";
 
 function Page() {
 	const [orders, setOrders] = useState<IOrder[]>([]);
+	const [loadError, setLoadError] = useState(false);
 	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		async function getData() {
-			const result = await fetch(process.env.serverUrl + '/order');
+			const result = await fetch('/api/backend/order');
 
 			if(result.ok){
 				const data = await result.json();
 				setOrders(data);
 				console.log(data);
 			}else{
-				throw new Error('Ошибка загрузки данных');
+				setLoadError(true);
 			}
 		}
 		
-		getData();
-		setLoading(false);
+		getData().catch(() => setLoadError(true)).finally(() => setLoading(false));
 	}, []);
 
+	if (loadError) return <Typography role="alert">Не удалось загрузить данные. Обновите страницу.</Typography>;
 	if(loading){
 		return(
 			<Box sx={{ 

@@ -1,41 +1,37 @@
-import Link from "next/link";
-import Image from "next/image";
-import ProductView from "@/component/ProductView";
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import ProductView from '@/component/ProductView';
+import type { IProduct } from '@/types/product';
 
-const getData = async (id:string) => {
-    const result = await fetch(process.env.API_URL + `/catalog/${id}`);
-		if(!result.ok) return null;
-    return await result.json();
+export default async function Page({ params }: { params: { id: string } }) {
+  const response = await fetch(`${process.env.API_URL}/catalog/${params.id}`, { cache: 'no-store' });
+  if (response.status === 404) notFound();
+  if (!response.ok) throw new Error('Не удалось загрузить товар');
+  const data: IProduct = await response.json();
+  if (!data) notFound();
+  return (
+    <main className="store-page">
+      <div className="store-shell">
+        <nav className="store-breadcrumb" aria-label="Хлебные крошки">
+          <Link href="/" className="hover:text-gold-100">Главная</Link><span aria-hidden="true">/</span>
+          <Link href="/catalog" className="hover:text-gold-100">Каталог</Link><span aria-hidden="true">/</span>
+          <span className="text-gold-100" aria-current="page">{data.title}</span>
+        </nav>
+        <p className="store-eyebrow">{data.price > 0 ? 'Ритуальная композиция' : 'Индивидуальное оформление'}</p>
+        <h1 className="store-title mb-8 mt-3">{data.title}</h1>
+        <div className="grid items-start gap-6 lg:grid-cols-2">
+          <div className="store-panel flex min-h-80 items-center justify-center bg-gradient-radial from-gold-200/10 p-6 sm:p-10">
+            <Image width={600} height={600} priority sizes="(max-width: 1024px) 90vw, 550px" className="max-h-[600px] w-full object-contain" alt={data.title} src={data.photo ? `${process.env.API_URL}/${data.photo}` : '/default.png'} />
+          </div>
+          <ProductView key={data.id} data={data} />
+          <section className="store-panel p-6 sm:p-8 lg:col-span-2">
+            <h2 className="text-2xl text-gold-100">О композиции</h2>
+            <p className="mt-4 max-w-3xl whitespace-pre-line leading-relaxed text-stone-300">{data.description || 'Детали оформления можно уточнить при подтверждении заказа.'}</p>
+            <Link href="/catalog" className="mt-6 inline-block text-sm text-gold-100 underline underline-offset-4">← Вернуться в каталог</Link>
+          </section>
+        </div>
+      </div>
+    </main>
+  );
 }
-
-async function Page({ params }: { params: { id: string } }) {
-  const data = await getData(params.id);
-	console.log(data);
-	if(data){
-  	return (
-			<section className="section">
-				<div className="container px-5">
-					<div className="hidden sm:flex text-2xl mb-5">
-						<Link className="text-gold-200 hover:text-gold-200" href="/catalog">Каталог</Link>
-						<span className="mx-2 text-gold-200">/</span>
-						<h1 className="text-gold-200">{data.title}</h1>
-					</div>
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-						<div className="flex items-center justify-center h-full bg-gradient-radial from-gold-200/20 border-2 border-gold-200">
-							<Image width={600} height={600} alt={data.title} src={process.env.API_URL + '/' + data.photo} />
-						</div>
-						<ProductView data={data} />
-						<div className="col-span-full mt-5">
-							<h3 className="text-4xl text-gold-200 font-bold mb-5">Описание</h3> 
-							<p className="text-xl text-base">{data.description}</p>
-						</div>
-					</div>
-				</div>
-			</section>
-  	);
-	}else{
-		throw new Error('Not found');
-	}
-}
-
-export default Page;

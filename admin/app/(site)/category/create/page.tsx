@@ -14,7 +14,7 @@ function Page() {
 	const router = useRouter();
 
 	const [title, setTitle] = useState<string>('');
-	const [order, setOrder] = useState<number | undefined>();
+	const [order, setOrder] = useState<number>(0);
 
 	const create = async () => {
 
@@ -23,7 +23,7 @@ function Page() {
 			order:order
 		}
 		
-		const result = await fetch(process.env.serverUrl + '/category', {
+		const result = await fetch('/api/backend/category', {
 			method:'POST',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8'

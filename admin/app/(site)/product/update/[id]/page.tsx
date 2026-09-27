@@ -31,7 +31,7 @@ function Page() {
 
 	useEffect(() => {
 		async function getData() {
-			const result = await fetch(process.env.serverUrl + '/catalog/' + id);
+			const result = await fetch('/api/backend/catalog/' + id);
 			console.log(result);
 			if(result.ok){
 				const data = await result.json();
@@ -41,7 +41,7 @@ function Page() {
 				setPrice(data.price);
 				setPhoto(data.photo);
 				setArticule(data.articule)
-				setCategory({id:data.category.id, label:data.category.name});
+				setCategory(data.category ? {id:data.category.id, label:data.category.name} : {});
 				setInfo(data.parametrs);
 			}else{
 				router.push('/product');
@@ -57,7 +57,7 @@ function Page() {
 
 	useEffect(() => {
 	  async function getData(){
-			const result = await fetch(process.env.serverUrl + '/category');
+			const result = await fetch('/api/backend/category');
 
 			if(result.ok){
 				const data = await result.json();
@@ -82,9 +82,10 @@ function Page() {
 			formData.append('description', description);
 			formData.append('articule', articule);
 			formData.append('price', price);
+      if (!photo && !file) formData.append('photo', '');
 			formData.append('info', JSON.stringify(info));
-			if(file) formData.append('file', file as File);
-			const result = await fetch(process.env.serverUrl + '/catalog/' + id, {
+			if (file) formData.append('file', file);
+			const result = await fetch('/api/backend/catalog/' + id, {
 				method: 'PATCH',
 				body: formData
 			})
@@ -121,6 +122,7 @@ function Page() {
 			</Breadcrumbs>
 			<Box
 			component="form"
+        onSubmit={(event) => { event.preventDefault(); void create(); }}
 			maxWidth={"600px"} 
 			marginTop={4}>
       		<Card variant="outlined">
@@ -174,7 +176,9 @@ function Page() {
 								setCategory(newValue);
 							}}
 							
-							options={categories}
+							isOptionEqualToValue={(option, value) => option.id === value.id}
+              getOptionLabel={(option) => option.label || ""}
+              options={categories}
 							sx={{ width: 300 }}
 							renderInput={(params) => <TextField {...params} label="Категории" />}
 						/>
@@ -256,7 +260,7 @@ function Page() {
 						</Grid>
 						<Grid mt={2}>
 							<Button 
-								onClick={create}
+								type="submit"
 								variant="contained">
 								Сохранить
 							</Button>

@@ -14,11 +14,11 @@ function Page() {
 	const router = useRouter();
 	const {id} = useParams();
 	const [title, setTitle] = useState<string>('');
-	const [order, setOrder] = useState<number | undefined>();
+	const [order, setOrder] = useState<number>(0);
 
 	useEffect(() => {
 		async function getData() {
-			const result = await fetch(process.env.serverUrl + '/category/' + id);
+			const result = await fetch('/api/backend/category/' + id);
 
 			if(result.ok){
 				const data = await result.json();
@@ -44,7 +44,7 @@ function Page() {
 			order:order
 		}
 		
-		let result = await fetch(process.env.serverUrl + '/category/' + id, {
+		let result = await fetch('/api/backend/category/' + id, {
 			method:'PATCH',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8'

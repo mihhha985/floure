@@ -24,11 +24,11 @@ function Page() {
 			formData.append('description', description);
 			formData.append('articule', articule);
 			formData.append('price', price);
-			formData.append('file', file as File);
+			if (file) formData.append('file', file);
 			formData.append('info', JSON.stringify(info));
 			//console.log(info);
 			
-			const result = await fetch(process.env.serverUrl + '/catalog', {
+			const result = await fetch('/api/backend/catalog', {
 				method: 'POST',
 				body: formData
 			})
@@ -60,7 +60,7 @@ function Page() {
 
 	useEffect(() => {
 	  async function getData(){
-			const result = await fetch(process.env.serverUrl + '/category');
+			const result = await fetch('/api/backend/category');
 
 			if(result.ok){
 				const data = await result.json();
@@ -94,6 +94,7 @@ function Page() {
 			</Breadcrumbs>
 			<Box
 				component="form"
+        onSubmit={(event) => { event.preventDefault(); void create(); }}
 				maxWidth={"600px"} 
 				marginTop={4}>
       			<Card variant="outlined">
@@ -145,7 +146,9 @@ function Page() {
 							}}
 							disablePortal
 							id="combo-box-demo"
-							options={categories}
+							isOptionEqualToValue={(option, value) => option.id === value.id}
+              getOptionLabel={(option) => option.label || ""}
+              options={categories}
 							sx={{ width: 300 }}
 							renderInput={(params) => <TextField key={params.id} {...params} label="Категории" />}
 						/>
@@ -206,7 +209,7 @@ function Page() {
 						</Grid>					
 						<Grid mt={2}>
 							<Button 
-								onClick={create}
+								type="submit"
 								variant="contained">
 								Сохранить
 							</Button>

@@ -1,69 +1,31 @@
-"use client"
-import {useEffect, useState } from "react";
-import { usePathname, useParams } from "next/navigation";
-import Link from "next/link";
-import { ICategory } from "@/types/category";
+'use client';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import type { ICategory } from '@/types/category';
 
-const getData = async () => {
-  try{
-    const result = await fetch(process.env.API_URL + '/category');
-    const data = await result.json();
-    return data;
-  } catch(err) {  
-		throw err;
-  }
+export default function CategoryList() {
+  const params = useParams();
+  const selected = Number(params?.id || 0);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(`${process.env.API_URL}/category`, { signal: controller.signal })
+      .then(response => response.ok ? response.json() as Promise<ICategory[]> : [])
+      .then(data => setCategories(data.filter(category => category.isActive)))
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, []);
+
+  return (
+    <nav className="flex w-max items-center gap-2 py-2" aria-label="Категории каталога">
+      <Link href="/catalog" className="store-chip" aria-current={selected === 0 ? 'page' : undefined}>Все категории</Link>
+      {categories.map(category => (
+        <Link key={category.id} href={`/catalog/${category.id}`} className="store-chip" aria-current={selected === category.id ? 'page' : undefined}>
+          {category.name}
+        </Link>
+      ))}
+    </nav>
+  );
 }
-
-function CategoryList() {
-	const {id} = useParams();
-	const [category, setCategory] = useState<number>(0);
-	const [data, setData] = useState<ICategory[]>([]);
-
-	useEffect(() => {
-		const getData = async () => {
-			try{
-				const result = await fetch(process.env.API_URL + '/category');
-				const data = await result.json();
-				setData(data);
-			} catch(err) {  
-				throw err;
-			}
-		}
-		
-		getData();
-	}, []);
-
-	useEffect(() => {
-		if(id === undefined) {
-			setCategory(0);
-		}else{
-			setCategory(+id);
-		}
-	}, [id]);
-
-	return ( 
-		<div className="flex flex-nowrap gap-x-5 w-max h-20 items-center">
-			<Link
-				href={'/catalog'}
-				className={`
-					${category === 0 ? 'bg-gold-200 text-white' : 'bg-[#26252a] text-gold-200'}
-					flex justify-center items-center text-xl px-5 py-2 rounded-xl cursor-pointer`
-				}>
-				Все категории
-			</Link>
-			{data && data.map((item:ICategory) =>
-				<Link key={item.id}
-					href={`/catalog/${item.id}`}
-					className={`
-						${item.id == category ? 'bg-gold-200 text-white' : 'bg-[#26252a] text-gold-200'}
-						flex justify-center items-center text-xl px-5 py-2 rounded-xl cursor-pointer`
-					}>
-					{item.name}
-				</Link>
-			)}
-		</div>
-
-	);
-}
-
-export default CategoryList;

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Catalog } from 'src/catalog/entities/catalog.entity';
+import { Catalog } from '../../catalog/entities/catalog.entity';
 
 @Entity()
 export class Category {
@@ -9,7 +9,7 @@ export class Category {
   @Column({ length: 500 })
   name: string;
 
-	@Column('int')
+	@Column('int', { default: 0 })
 	order:number;
 
 	@Column({

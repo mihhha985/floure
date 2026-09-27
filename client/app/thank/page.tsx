@@ -1,18 +1,13 @@
-function Page() {
-	return ( 
-		<section className="section">
-			<div className="w-full md:w-1/2 lg:w-1/3 p-10 rounded-lg border-2 border-base mx-auto my-10 lg:my-20">
-				<h1 className="text-4xl text-gold-100 font-bold text-center mb-5">Спасибо за заказ!</h1>
-				<h4 className="text-xl text-gold-200 text-center mb-2">
-					В ближайшее время нам менеджер свяжется с Вами для уточнения деталей заказа<br />
-					Время работы магазина с 9:00 до 20:00 без выходных, по всем вопросам пишите на почту: 
-					<span className="ml-5 text-gradient-link">123@mail.ru</span>
-				</h4>
-				<h5 className="text-gold-200 text-center mt-10">С уважение администрация интернет-магазина 
-				<br /><span className="text-2xl text-gradient-logo">Вечная Память</span></h5>
-			</div>
-		</section>
-	 );
-}
+import Link from 'next/link';
 
-export default Page;
+export default function Page() {
+  return (
+    <main className="store-page px-5">
+      <div className="store-panel mx-auto max-w-xl p-8 text-center sm:p-12">
+        <h1 className="store-title">Спасибо за заявку</h1>
+        <p className="mt-5 leading-relaxed text-stone-300">Мы получили ваш заказ. Состав композиции, наличие и условия выполнения уточняются до подтверждения.</p>
+        <Link href="/catalog" className="btn mt-8 inline-flex min-h-[44px] items-center px-6">Вернуться в каталог</Link>
+      </div>
+    </main>
+  );
+}

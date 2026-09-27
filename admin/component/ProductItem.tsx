@@ -18,7 +18,7 @@ function ProductItem({item}:{item:IProduct}) {
 	const [status, setStatus] = useState<boolean>(item.isActive);
 	
 	const statusHeandler = async () => {
-			let data = await fetch(`${process.env.serverUrl}/catalog/${item.id}?status=${status}` , {
+			let data = await fetch(`/api/backend/catalog/${item.id}?status=${status}` , {
 				method: "PUT"
 			});
 

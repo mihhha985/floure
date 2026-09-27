@@ -1,76 +1,37 @@
-"use client"
-import { useState } from "react";
-import {motion, AnimatePresence} from "framer-motion";
-import Image from "next/image";
-import img from "@/public/rose_btn.png";
-import img2 from "@/public/carnation_btn.png";
+'use client';
+import { useState } from 'react';
+import Image from 'next/image';
 
-const variants = {
-	hidden: { 
-		opacity: 0,
-		scale:0.8 
-	},
-	visible: { 
-		opacity: 1,
-		scale:1, 
-	},
+const materials = {
+  rose: {
+    title: 'Розы',
+    text: 'Розы часто выбирают для сдержанных композиций. Белые оттенки создают светлый акцент, красные — более выразительный. Перед заказом проверьте состав конкретного изделия в карточке.',
+    image: '/rose_btn.png',
+  },
+  carnation: {
+    title: 'Гвоздики',
+    text: 'Гвоздики подходят для лаконичного оформления и хорошо сочетаются с декоративной зеленью. Наличие оттенков и возможность замены уточняются при подтверждении заказа.',
+    image: '/carnation_btn.png',
+  },
+} as const;
+
+export default function Material() {
+  const [selected, setSelected] = useState<keyof typeof materials>('rose');
+  const material = materials[selected];
+  return (
+    <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_280px]">
+      <div className="rounded-xl border border-gold-200/40 bg-[#26252a] p-7">
+        <h3 className="text-2xl text-gold-100">{material.title}</h3>
+        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-stone-300">{material.text}</p>
+      </div>
+      <div className="flex items-center justify-center gap-5 rounded-xl border border-gold-200/30 p-4">
+        {(Object.keys(materials) as Array<keyof typeof materials>).map(key => (
+          <button key={key} type="button" onClick={() => setSelected(key)} aria-pressed={selected === key} aria-label={materials[key].title}
+            className={`rounded-full border-2 p-2 transition ${selected === key ? 'border-gold-100 bg-gold-200/20' : 'border-transparent hover:border-gold-200'}`}>
+            <Image src={materials[key].image} alt="" width={88} height={88} />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
-
-type materialType = 'rose' | 'carnation';
-
-function Material() {
-	const [material, setMaterial] = useState<materialType>('rose');
-
-	return ( 
-		<div className="grid grid-cols-1 lg:grid-cols-2 w-full px-5 xl:px-20 gap-x-10">
-			<div className="p-5 rounded-xl border-2 border-base">
-				<AnimatePresence mode="wait">
-					{material === 'rose' && 
-						<motion.div
-							key={material}
-							variants={variants}
-							initial="hidden"
-							animate="visible"
-							exit="hidden"
-							transition={{duration: 0.5}}
-						>
-						<h4 className="text-2xl font-semibold text-gold-200">Розы</h4>
-						<p className="text-xl text-base">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente minus iste in. 
-						Maxime quos quaerat dignissimos quae ut corrupti. Voluptates dolore possimus ducimus 
-						doloremque et natus amet corporis illo voluptatum.</p>
-						</motion.div>
-					}
-					{material === 'carnation' && 
-						<motion.div
-							key={material}
-							variants={variants}
-							initial="hidden"
-							animate="visible"
-							exit="hidden"
-							transition={{duration: 0.5}}
-						>
-						<h4 className="text-2xl font-semibold text-gold-200">Гвоздики</h4>
-						<p className="text-xl text-base">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente minus iste in. 
-						Maxime quos quaerat dignissimos quae ut corrupti. Voluptates dolore possimus ducimus 
-						doloremque et natus amet corporis illo voluptatum.</p>
-						</motion.div>
-					}
-				</AnimatePresence>
-			</div>
-			<div className="py-10">
-				<Image
-					onClick={() => setMaterial('rose')} 
-					className="inline ml-5 cursor-pointer"
-					src={img} alt="rose" width={100} height={100} 
-				/>
-				<Image
-					onClick={() => setMaterial('carnation')} 
-					className="inline ml-5 cursor-pointer"
-					src={img2} alt="rose" width={100} height={100} 
-				/>
-			</div>
-		</div>
-	);	
-}
-
-export default Material;

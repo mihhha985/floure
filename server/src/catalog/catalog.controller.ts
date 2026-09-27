@@ -12,7 +12,9 @@ import {
 	Patch, 
 	Param, 
 	Query 
+  ,UseGuards
 } from '@nestjs/common';
+import { AdminKeyGuard } from '../admin-key.guard';
 import { CatalogService } from './catalog.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
 import { UpdateCatalogDto } from './dto/update-catalog.dto';
@@ -30,7 +32,7 @@ export class CatalogController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.catalogService.findOne(+id);
   }
 
@@ -40,7 +42,8 @@ export class CatalogController {
 	}
 	
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseGuards(AdminKeyGuard)
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10 * 1024 * 1024 } }))
   create(
 	@UploadedFile() file: Express.Multer.File,
 	@Body() dto: CreateCatalogDto
@@ -49,9 +52,10 @@ export class CatalogController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseGuards(AdminKeyGuard)
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10 * 1024 * 1024 } }))
   update(
-	@Param('id') id: string, 
+	@Param('id', ParseIntPipe) id: number,
 	@Body() dto: UpdateCatalogDto,
 	@UploadedFile() file: Express.Multer.File | undefined
   ) {	
@@ -59,6 +63,7 @@ export class CatalogController {
   }
 
 	@Put(':id')
+	@UseGuards(AdminKeyGuard)
 	setStatus
 		(@Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) id: number, 
 		@Query('status', new ParseBoolPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) status: boolean

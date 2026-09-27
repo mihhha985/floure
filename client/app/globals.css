@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .store-shell { @apply mx-auto w-full max-w-6xl px-5; }
+  .store-page { @apply min-h-[70vh] pb-20 pt-36 sm:pb-24 sm:pt-44; }
+  .store-panel { @apply rounded-2xl border border-gold-200/25 bg-[#1b1a1d]; }
+  .store-title { @apply text-3xl font-medium leading-tight text-gold-100 sm:text-4xl; }
+  .store-eyebrow { @apply text-xs uppercase tracking-[0.2em] text-gold-200; }
+  .store-grid { @apply grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3; }
+  .store-card { @apply flex h-full flex-col overflow-hidden rounded-2xl border border-gold-200/25 bg-[#1b1a1d] transition-colors hover:border-gold-200/70; }
+  .store-chip { @apply inline-flex min-h-[44px] items-center justify-center rounded-xl border border-gold-200/30 bg-[#1b1a1d] px-4 py-2 text-sm text-gold-100 transition-colors hover:border-gold-200; }
+  .store-chip[aria-current="page"], .store-chip[aria-pressed="true"] { @apply border-gold-100 bg-gold-100 text-[#1b1a1d]; }
+  .store-field { @apply min-h-[44px] rounded-xl border border-gold-200/40 bg-[#121114] px-3 py-2 text-gold-100; }
+  .store-breadcrumb { @apply mb-7 flex flex-wrap items-center gap-2 text-sm text-stone-400; }
+}
+
+:focus-visible { outline: 2px solid #f9e7b9; outline-offset: 4px; }
+::selection { background: #978655; color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
 body {
     @apply min-h-screen relative bg-[#0f0e10] font-display;
 }

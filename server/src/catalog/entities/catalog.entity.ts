@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne,  OneToMany } from 'typeorm';
-import { Category } from 'src/category/entities/category.entity';
+import { Category } from '../../category/entities/category.entity';
 import { Parametrs } from './parametrs.entity';
 import { Images } from './images.entity';
 

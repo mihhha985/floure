@@ -16,7 +16,7 @@ function CategoryItem({item} : {item:ICategory}) {
 	const [status, setStatus] = useState<boolean>(item.isActive);
 	
 	const statusHeandler = async () => {
-			let data = await fetch(`${process.env.serverUrl}/category/${item.id}?status=${status}` , {
+			let data = await fetch(`/api/backend/category/${item.id}?status=${status}` , {
 				method: "PUT"
 			});
 

@@ -1,157 +1,75 @@
-"use client"
-import {useState} from "react";
-import {useAppDispatch} from "@/store/hooks";
-import {addProduct} from "@/store/features/orderSlice";	
-import type { IProduct, IParameters, ColorType, IOrderProduct } from "@/types/product";
-import {IoCartOutline} from 'react-icons/io5';
-import { GiCheckMark } from "react-icons/gi";
+"use client";
+import { useState } from 'react';
+import Link from 'next/link';
+import { IoCartOutline } from 'react-icons/io5';
+import { useAppDispatch } from '@/store/hooks';
+import { addProduct } from '@/store/features/orderSlice';
+import type { IProduct, IParameters, ColorType } from '@/types/product';
 
-function ProductView({data}:{data:IProduct}) {
-	//console.log(data.parametrs);
-	const dispatch = useAppDispatch();
-	const [quantity, setQuantity] = useState<number>(1);
-	const [price, setPrice] = useState<IParameters>(data.parametrs[0]);
-	const [color, setColor] = useState<ColorType | null>(null);
-	const [text, setText] = useState<string>('');
-	const [add, setAdd] = useState<boolean>(false);
+const colors: { value: ColorType; label: string; background: string }[] = [
+  { value: 'white', label: 'Белая', background: '#fff' },
+  { value: 'black', label: 'Чёрная', background: '#111' },
+  { value: 'lime', label: 'Зелёная', background: '#84cc16' },
+  { value: 'sky', label: 'Голубая', background: '#0ea5e9' },
+  { value: 'purple', label: 'Фиолетовая', background: '#a855f7' },
+  { value: 'pink', label: 'Розовая', background: '#ec4899' },
+  { value: 'rose', label: 'Красная', background: '#f43f5e' },
+  { value: 'gray', label: 'Серая', background: '#6b7280' },
+];
 
-	const quantityHandler = (num:number):void => {
-		if(num > 0) setQuantity(num);
-	}
+export default function ProductView({ data }: { data: IProduct }) {
+  const dispatch = useAppDispatch();
+  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState<IParameters>(data.parametrs[0] ?? { id: 0, size: 0, cost: data.price });
+  const [color, setColor] = useState<ColorType | null>(null);
+  const [text, setText] = useState('');
+  const [ribbon, setRibbon] = useState(false);
+  const [added, setAdded] = useState(false);
+  const canOrder = data.price > 0 && price.cost > 0;
 
-	const addProductHeandler = ():void => {
-		const product:IOrderProduct = {
-			id: data.id,
-			title: data.title,
-			photo: data.photo as string,
-			articule: data.articule,
-			price: price.cost,
-			size: price.size,
-			quantity:quantity,
-			lent: add,
-			color: color,
-			text: text,
-		}
-		
-		dispatch(addProduct(product));
-		const order = localStorage.getItem("order");
-		if (order) {
-			const orderJson = JSON.parse(order);
-			const newOrder = [...orderJson, product];
-			localStorage.setItem("order", JSON.stringify(newOrder));	
-		}else{
-			localStorage.setItem("order", JSON.stringify([product]));
-		}
-	}
+  function addToCart() {
+    if (!canOrder) return;
+    dispatch(addProduct({ id: data.id, title: data.title, photo: data.photo, articule: data.articule,
+      price: price.cost, size: price.size, quantity, lent: ribbon, color: ribbon ? color : null, text: ribbon ? text : '' }));
+    setAdded(true);
+  }
 
-	return ( 
-		<div className="h-full flex flex-col gap-y-5">
-							<h2 className="text-4xl font-bold text-gold-100">Цена: {price.cost} ₽</h2>
-							<h2 className="text-2xl text-gold-200 font-bold">Артикул: {data.articule}</h2> 
-							<div className="w-full h-12 flex items-center justify-around bg-[#26252a] mb-5 font-bold text-lg text-gold-100 mt-5">
-								{data.isActive ? 'В наличии' : 'Под заказ'}
-							</div>
-							<div className="flex flex-col">
-								<h4 className="text-gold-200 text-xl mb-1">Выберите размер венка:</h4>
-								<div className="flex gap-x-2">
-									{data.parametrs && data.parametrs.map((param:any, index:number) =>
-										<div 
-											onClick={() => setPrice(param)}
-											className={`${(param.size === price.size) ? 'border-4 border-white' : 'border-4 border-gold-100/90'}
-											bg-gold-100/90 hover:bg-gold-100 text-black/60 text-xl font-bold rounded-lg p-2 cursor-pointer`} 
-											key={index}>
-											{param.size} см
-										</div>
-									)}
-								</div>
-							</div>
-
-							<div className="flex flex-col mt-5 text-xl text-gold-200">
-								<div>
-									<input onClick={() => setAdd(false)} type="radio" name="add" defaultChecked/>
-									<span className="ml-2">Без траурной ленты</span>	
-								</div>
-								<div>
-									<input onClick={() => setAdd(true)} type="radio" name="add"/>
-									<span className="ml-2">Добавить траурную ленту</span>	
-								</div>
-							</div>
-
-							{add &&
-							<div className="grid grid-cols-2">
-								<div className="flex flex-col">
-									<h4 className="text-gold-200">Выберите цвет ленты:</h4>
-									<div className="grid grid-cols-4 gap-1">
-										<div 
-											onClick={() => setColor('white')} 
-											className={`w-10 h-10 bg-white border border-gold-100 flex items-center justify-center`}>
-											{color === 'white' && <GiCheckMark className="text-xl font-bold"/>}
-										</div>
-										<div
-											onClick={() => setColor('black')} 
-											className="w-10 h-10 bg-black border border-gold-100 flex items-center justify-center">
-											{color === 'black' && <GiCheckMark className="text-white text-xl font-bold"/>}	
-										</div>
-										<div
-											onClick={() => setColor('lime')} 
-											className="w-10 h-10 bg-lime-500 border border-gold-100 flex items-center justify-center">
-											{color === 'lime' && <GiCheckMark className="text-white text-xl font-bold"/>}	
-										</div>
-										<div 
-											onClick={() => setColor('sky')}
-											className="w-10 h-10 bg-sky-500 border border-gold-100 flex items-center justify-center">
-											{color === 'sky' && <GiCheckMark className="text-white text-xl font-bold"/>}
-										</div>
-										<div
-											onClick={() => setColor('purple')} 
-											className="w-10 h-10 bg-purple-500 border border-gold-100 flex items-center justify-center">
-											{color === 'purple' && <GiCheckMark className="text-white text-xl font-bold"/>}
-											</div>
-										<div
-											onClick={() => setColor('pink')} 
-											className="w-10 h-10 bg-pink-500 border border-gold-100 flex items-center justify-center">
-											{color === 'pink' && <GiCheckMark className="text-white text-xl font-bold"/>}
-										</div>
-										<div
-											onClick={() => setColor('rose')} 
-											className="w-10 h-10 bg-rose-500 border border-gold-100 flex items-center justify-center">
-											{color === 'rose' && <GiCheckMark className="text-white text-xl font-bold"/>}
-										</div>
-										<div
-											onClick={() => setColor('gray')} 
-											className="w-10 h-10 bg-gray-500 border border-gold-100 flex items-center justify-center">
-											{color === 'gray' && <GiCheckMark className="text-white text-xl font-bold"/>}
-										</div>
-									</div>		
-								</div>
-								<div className="flex flex-col">
-									<h4 className="text-gold-200">Напишите ваше пожелание:</h4>
-									<textarea 
-										onChange={e => setText(e.target.value)}
-										className="w-full h-full bg-transparent border border-base rounded resize-none outline-none text-base italic p-2">{text}</textarea>
-								</div>
-							</div>		
-							}
-
-							<div className="w-full h-24 flex items-center justify-around mt-auto bg-[#26252a]">
-								<div className="flex items-center gap-x-2">
-									<label className="text-gold-200 text-2xl">Кол-во:</label>
-									<input
-										className="w-12 bg-gold-100 text-black text-xl rounded p-2"
-										type="number"
-										value={quantity}
-										onChange={e => quantityHandler(+e.target.value)} 
-									/>
-								</div>
-								<button
-									onClick={addProductHeandler} 
-									className="flex items-center justify-center btn w-[160px] px-2">
-									<span>В корзину</span>
-									<IoCartOutline className="ml-2" />
-								</button>
-							</div>
-						</div>
-	 );
+  return (
+    <div className="store-panel flex flex-col gap-6 p-6 sm:p-8" onChange={() => setAdded(false)}>
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+        <span className="text-stone-400">Артикул {data.articule}</span>
+        <span className="rounded-full border border-gold-200/30 px-3 py-1 text-gold-100">{data.price <= 0 ? 'Пример · под заказ' : data.isActive ? 'В наличии' : 'Под заказ'}</span>
+      </div>
+      <div>
+        <p className="text-3xl text-gold-100">{canOrder ? `${price.cost.toLocaleString('ru-RU')} ₽` : 'Стоимость по запросу'}</p>
+        <p className="mt-3 text-sm leading-relaxed text-stone-400">{data.price <= 0 ? 'Изображение показывает возможное оформление. Готового изделия в наличии нет. Состав, размер и стоимость согласуются индивидуально.' : 'Состав, наличие и условия выполнения уточняются при подтверждении заказа.'}</p>
+      </div>
+      {data.price > 0 && <>
+        {data.parametrs.length > 0 && <fieldset>
+          <legend className="mb-3 text-gold-100">Размер венка</legend>
+          <div className="flex flex-wrap gap-2">{data.parametrs.map(param => <button key={param.id} type="button" aria-pressed={price.id === param.id} className="store-chip" onClick={() => { setPrice(param); setAdded(false); }}>{param.size} см</button>)}</div>
+        </fieldset>}
+        <fieldset className="border-t border-gold-200/20 pt-5">
+          <legend className="text-gold-100">Оформление лентой</legend>
+          <div className="flex flex-col gap-3 text-sm text-stone-300">
+            <label className="flex min-h-[32px] cursor-pointer items-center gap-3"><input className="accent-[#978655]" type="radio" name="ribbon" checked={!ribbon} onChange={() => setRibbon(false)} />Без траурной ленты</label>
+            <label className="flex min-h-[32px] cursor-pointer items-center gap-3"><input className="accent-[#978655]" type="radio" name="ribbon" checked={ribbon} onChange={() => setRibbon(true)} />Добавить траурную ленту</label>
+          </div>
+        </fieldset>
+        {ribbon && <div className="space-y-5">
+          <fieldset><legend className="mb-3 text-sm text-gold-100">Цвет ленты{color ? `: ${colors.find(item => item.value === color)?.label.toLowerCase()}` : ''}</legend>
+            <div className="flex flex-wrap gap-2">{colors.map(item => <button key={item.value} type="button" aria-label={item.label} aria-pressed={color === item.value} title={item.label} onClick={() => { setColor(item.value); setAdded(false); }} className={`flex h-11 w-11 items-center justify-center rounded-full border-2 ${color === item.value ? 'border-gold-100 ring-2 ring-gold-200 ring-offset-2 ring-offset-[#1b1a1d]' : 'border-stone-500'}`} style={{ backgroundColor: item.background }}>{color === item.value && <span className="rounded-full bg-black/70 px-1 text-sm text-white">✓</span>}</button>)}</div>
+          </fieldset>
+          <label className="block text-sm text-gold-100">Пожелание или надпись на ленте<textarea maxLength={500} className="store-field mt-3 min-h-28 w-full resize-y" value={text} onChange={event => setText(event.target.value)} placeholder="Укажите желаемый текст" /></label>
+        </div>}
+      </>}
+      {canOrder ? <div className="border-t border-gold-200/20 pt-6">
+        <div className="flex flex-wrap items-end gap-4">
+          <label className="text-sm text-stone-300">Количество<input type="number" min={1} max={100} step={1} value={quantity} className="store-field mt-2 block w-24" onChange={event => { const value = Number(event.target.value); if (Number.isSafeInteger(value) && value > 0 && value <= 100) setQuantity(value); }} /></label>
+          <button type="button" onClick={addToCart} className="btn flex min-h-[44px] flex-1 items-center justify-center gap-2 whitespace-nowrap px-5"><IoCartOutline aria-hidden="true" />В корзину</button>
+        </div>
+        <p aria-live="polite" className="mt-3 min-h-5 text-sm text-gold-100">{added && <>Товар добавлен. <Link href="/cart" className="underline underline-offset-4">Открыть корзину →</Link></>}</p>
+      </div> : <Link href="/contact" className="btn px-6 py-3 text-center">Обсудить оформление</Link>}
+    </div>
+  );
 }
-
-export default ProductView;

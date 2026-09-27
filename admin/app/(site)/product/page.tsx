@@ -21,11 +21,12 @@ function Page() {
 	const dispatch = useAppDispatch();
 	const {total, products} = useAppSelector(state => state.products);
 	const [page, setPage] = useState<number>(1);
+	const [loadError, setLoadError] = useState(false);
 	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		async function getData() {
-			const result = await fetch(process.env.serverUrl + '/catalog');
+			const result = await fetch('/api/backend/catalog');
 
 			if(result.ok){
 				const data = await result.json();
@@ -39,14 +40,14 @@ function Page() {
 			}
 		}
 		
-		getData();
-		setLoading(false);
+		getData().catch(() => setLoadError(true)).finally(() => setLoading(false));
 	}, [dispatch]);
 
 	const pages = useMemo(() => {
 		return Math.ceil(total / 10);
 	}, [total]);
 
+	if (loadError) return <Typography role="alert">Не удалось загрузить данные. Обновите страницу.</Typography>;
 	if(loading){
 		return(
 			<Box sx={{ 
@@ -68,7 +69,7 @@ function Page() {
 			<Stack spacing={2} mt={4}>
 				{products.length > 0
 					?			
-					products.map((item:IProduct) => 
+					products.slice((Math.min(page, pages || 1) - 1) * 10, Math.min(page, pages || 1) * 10).map((item:IProduct) =>
 						<ProductItem key={item.id} item={item} />
 					)
 					:

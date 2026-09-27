@@ -13,3 +13,7 @@
 /admin/.env
 _client
 
+
+/.env
+/.local/
+**/*.tsbuildinfo

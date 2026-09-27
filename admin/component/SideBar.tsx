@@ -11,8 +11,6 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 
 function SideBar() {
 	const router = useRouter();
@@ -62,26 +60,6 @@ function SideBar() {
 								<AddShoppingCartIcon />
 							</ListItemIcon>
 							<ListItemText primary="Заказы" />
-						</ListItemButton>
-					</ListItem>
-					<ListItem 
-					onClick={() => router.push('/sender')}
-					disablePadding>
-						<ListItemButton>
-							<ListItemIcon>
-								<DraftsIcon />
-							</ListItemIcon>
-							<ListItemText primary="Рассылка" />
-						</ListItemButton>
-					</ListItem>
-					<ListItem 
-					onClick={() => router.push('/document')}
-					disablePadding>
-						<ListItemButton>
-							<ListItemIcon>
-								<FolderCopyIcon />
-							</ListItemIcon>
-							<ListItemText primary="Документы" />
 						</ListItemButton>
 					</ListItem>
 				</List>

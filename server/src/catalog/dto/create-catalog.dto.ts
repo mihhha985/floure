@@ -6,6 +6,7 @@ export class CreateCatalogDto {
 	price:number;
 	photo?:string;
 	isActive:boolean;
-	categoryId:number;
+	category:number;
+	categoryId?:number;
 	info:string;
 }

@@ -3,7 +3,7 @@ import { ICategory } from "@/types/category";
 
 const getData = async () => {
   try{
-    const result = await fetch(process.env.API_URL + '/category');
+    const result = await fetch(process.env.API_URL + '/category', { cache: 'no-store' });
     const data = await result.json();
     return data;
   } catch(err) {  
@@ -14,7 +14,6 @@ const getData = async () => {
 async function CategoryList({category}: {category:number}) {
 
 	const data = await getData();
-	console.log('category active: ' + category)	
 	return ( 
 		<div className="flex flex-nowrap gap-x-5 w-max h-20 items-center">
 			<Link

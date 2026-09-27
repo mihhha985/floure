@@ -1,11 +1,3 @@
-function Loading() {
-	return ( 
-		<section className='section pb-32'>
-			<div className="w-full h-full flex items-center justify-center">
-				<div className="w-[200px] h-[200px] border-e-4 border-gold-100 rounded-full animate-spin"></div>
-			</div>
-		</section>
-	);
+export default function Loading() {
+  return <div role="status" aria-label="Загрузка каталога" className="store-grid">{Array.from({ length: 6 }, (_, index) => <div key={index} className="store-panel animate-pulse p-5"><div className="h-64 rounded-xl bg-white/5" /><div className="mt-5 h-5 w-3/4 rounded bg-white/10" /><div className="mt-3 h-5 w-1/2 rounded bg-white/5" /></div>)}</div>;
 }
-
-export default Loading;

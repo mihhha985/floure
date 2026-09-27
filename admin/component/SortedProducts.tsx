@@ -9,7 +9,7 @@ import { IProduct } from '@/types/product';
 import { ICategory } from '@/types/category';
 import Helpers from '@/helpers';
 
-let selected:AutocompleteOption|null = null;
+
 type AutocompleteOption = {
   id: number;
   label: string;
@@ -17,11 +17,12 @@ type AutocompleteOption = {
 
 function SortedProducts() {
   const dispatch = useAppDispatch();
+  const [selected, setSelected] = useState<AutocompleteOption | null>(null);
   const [categories, setCategories] = useState<AutocompleteOption[]|[]>([]);
   
   useEffect(() => {
 		async function getData() {
-			const result = await fetch(process.env.serverUrl + '/category');
+			const result = await fetch('/api/backend/category');
 
 			if(result.ok){
 				const data = await result.json();
@@ -46,10 +47,10 @@ function SortedProducts() {
 	}, [dispatch]);
 
   const setProductsByCategory = async (value:AutocompleteOption|null) => {
-    selected = value;
+    setSelected(value);
     
     if(value){
-      const result = await fetch(process.env.serverUrl + '/catalog/category/' + value.id);
+      const result = await fetch('/api/backend/catalog/category/' + value.id);
 
       if(result.ok){
         const data = await result.json();
@@ -64,7 +65,7 @@ function SortedProducts() {
     }
 
     if(value === null){
-      const result = await fetch(process.env.serverUrl + '/catalog');
+      const result = await fetch('/api/backend/catalog');
 
 			if(result.ok){
 				const data = await result.json();
@@ -88,6 +89,7 @@ function SortedProducts() {
         <Autocomplete
           disablePortal
           id="combo-box-demo"
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           options={categories}
           sx={{ width: 300 }}
           value={selected}

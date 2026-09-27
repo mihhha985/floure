@@ -26,7 +26,7 @@ function OrderItem({item}: {item:IOrder}) {
 	const [comment, setComment] = useState<string>(item.comment);
 	//console.log(item);
 	const handleChange = async (event: SelectChangeEvent) => {
-		const result = await fetch(process.env.serverUrl + '/order/status/' + item.id, {
+		const result = await fetch('/api/backend/order/status/' + item.id, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ function OrderItem({item}: {item:IOrder}) {
   };
 
 	const handleComment = async (e:InputEvent) => {
-		const result = await fetch(process.env.serverUrl + '/order/comment/' + item.id, {
+		const result = await fetch('/api/backend/order/comment/' + item.id, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
